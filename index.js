@@ -106,7 +106,7 @@ function setUserName(userName) {
  */
 function showPackageVerion() {
   const version = require("./package.json").version;
-  console.log(`mqmj_cli version: ${version}`);
+  console.log(`mqmj_cli version: ${chalk.green(version)}`);
 }
 
 /**
