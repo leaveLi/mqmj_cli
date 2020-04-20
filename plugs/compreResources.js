@@ -46,7 +46,7 @@ exports.compreResources = function () {
         ],
       })
         .then((e) => {
-          fs.writeFileSync(e[0].sourcePath, e[0].data);
+          e[0] && fs.writeFileSync(e[0].sourcePath, e[0].data);
           count++;
           if (fileList.length == count) {
             resovle();
