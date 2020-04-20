@@ -1,5 +1,5 @@
 {
-	"userName": "AH_mq_38",
-	"uploadServer": "https://pmaster.bflyzx.com",
-	"uploadPath": "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl"
+  "userName": "test",
+  "uploadServer": "https://pmaster.bflyzx.com",
+  "uploadPath": "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl"
 }
