@@ -23,6 +23,7 @@
     "commander": "^5.0.0",
     "cwebp-bin": "^5.1.0",
     "imagemin": "^7.0.1",
+    "pngquant-bin": "^5.0.2",
     "request": "^2.88.2",
     "zip-local": "^0.3.4"
   }
