@@ -4,10 +4,6 @@
 
 请确保安装了较新的 nodejs，版本需要>=8
 
-### 推荐：设置国内镜像
-
-    npm config set registry https://registry.npm.taobao.org
-
 ### 全局安装
 
     npm i mqmj_cli -g
@@ -15,6 +11,10 @@
 ### 临时使用国内镜像进行全局安装
 
     npm i mqmj_cli -g --registry https://registry.npm.taobao.org
+
+### 如果需要长期使用国内镜像
+
+    npm config set registry https://registry.npm.taobao.org
 
 ### 如果安装失败
 
