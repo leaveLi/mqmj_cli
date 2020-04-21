@@ -24,6 +24,15 @@
     4.执行 npm link
     5.执行 mq -v   测试是否安装成功
 
+### 常见问题
+
+cwebp-bin，pngquant-bin 这两个依赖安装会比较慢，请耐心等待
+
+如果安装失败，请尝试全局安装
+
+    npm i -g cwebp-bin
+    npm i -g pngquant-bin
+
 ### 测试是否安装成功
 
     mq -v    （如果成功会正确输出工具包版本）

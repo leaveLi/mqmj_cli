@@ -1,6 +1,6 @@
 {
   "name": "mqmj_cli",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "梦启科技-h5产品自动化发布工具",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,6 @@
     "chalk": "^4.0.0",
     "commander": "^5.0.0",
     "cwebp-bin": "^5.1.0",
-    "imagemin": "^7.0.1",
     "pngquant-bin": "^5.0.2",
     "request": "^2.88.2",
     "zip-local": "^0.3.4"
