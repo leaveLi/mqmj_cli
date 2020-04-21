@@ -1,11 +1,13 @@
-const imagemin = require("imagemin");
-const imageminPngquant = require("imagemin-pngquant");
 const fileUtil = require("../utils/file");
 const fs = require("fs");
 const p = require("path");
+const { execFile } = require("child_process");
+const pngquant = require("pngquant-bin");
 
 let count = 0;
 let fileList = [];
+const q = 80; // png质量
+const outputPath = `${process.cwd()}/resource/outputImages`;
 
 function read(path) {
   const files = fs.readdirSync(path);
@@ -25,8 +27,10 @@ function read(path) {
 }
 
 function addFile(file, path) {
-  let i = p.join(path, file);
-  fileList.push(i);
+  fileList.push({
+    sourcePath: p.join(path, file),
+    outputPath: p.join(outputPath, file),
+  });
 }
 
 exports.compreResources = function () {
@@ -38,24 +42,42 @@ exports.compreResources = function () {
     }
     read(`${process.cwd()}/resource`);
     for (let file of fileList) {
-      imagemin([file], {
-        plugins: [
-          imageminPngquant({
-            quality: [0.6, 0.8],
-          }),
-        ],
-      })
-        .then((e) => {
-          e[0] && fs.writeFileSync(e[0].sourcePath, e[0].data);
-          count++;
-          if (fileList.length == count) {
-            resovle();
-            fileUtil.save(tagFilePath, JSON.stringify(fileList));
+      execFile(
+        pngquant,
+        ["-q", q, file.sourcePath, "-o", file.sourcePath, "-f"],
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            count = count + 1;
+            if (fileList.length == count) {
+              resovle();
+              fileUtil.save(tagFilePath, JSON.stringify(fileList));
+            }
           }
-        })
-        .catch((e) => {
-          reject(e);
-        });
+        }
+      );
     }
+
+    //   for (let file of fileList) {
+    //     imagemin([file], {
+    //       plugins: [
+    //         imageminPngquant({
+    //           quality: [0.6, 0.8],
+    //         }),
+    //       ],
+    //     })
+    //       .then((e) => {
+    //         e[0] && fs.writeFileSync(e[0].sourcePath, e[0].data);
+    //         count++;
+    //         if (fileList.length == count) {
+    //           resovle();
+    //           fileUtil.save(tagFilePath, JSON.stringify(fileList));
+    //         }
+    //       })
+    //       .catch((e) => {
+    //         reject(e);
+    //       });
+    //   }
   });
 };

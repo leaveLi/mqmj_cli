@@ -11,12 +11,18 @@
   "bin": {
     "mq": "index.js"
   },
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leaveLi/mqmj_cli.git"
+  },
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^5.0.0",
     "cwebp-bin": "^5.1.0",
     "imagemin": "^7.0.1",
-    "imagemin-pngquant": "^8.0.0",
     "request": "^2.88.2",
     "zip-local": "^0.3.4"
   }
