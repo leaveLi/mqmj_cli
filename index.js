@@ -5,8 +5,9 @@
 const chalk = require("chalk");
 const { execSync } = require("child_process");
 const { program } = require("commander");
-const { userName } = require("./config/config.json");
+const fileUtil = require("./utils/file");
 const fs = require("fs");
+const configPath = __dirname + "/../mqmj_cli_config.json";
 
 // 命令行所在路径
 const $rootPath = process.cwd();
@@ -91,13 +92,17 @@ if (program.setUserName) {
  */
 function setUserName(userName) {
   const t = Date.now();
-  const configPath = "./config/config.json";
-  let config = require(configPath);
+
+  let config = fileUtil.read(configPath);
+  if (!config) {
+    config = {
+      userName: "test",
+      uploadServer: "https://pmaster.bflyzx.com",
+      uploadPath: "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl",
+    };
+  }
   config.userName = userName;
-  fs.writeFileSync(
-    __dirname + "/config/config.json",
-    JSON.stringify(config, null, "\t")
-  );
+  fs.writeFileSync(configPath, JSON.stringify(config, null, "\t"));
   success("用户名设置", Date.now() - t);
 }
 
@@ -116,8 +121,7 @@ function showPackageVerion() {
 function publish(version) {
   if (!checkVerison(version))
     return error("版本号检测", "请编写规范的版本号 eg: 1.0.0 或者 1.0.0.0");
-  if (!userName || userName === "test")
-    return error("获取用户名", "请先设置用户名 mq -s xxx");
+  if (!checkUserName()) return error("获取用户名", "请先设置用户名 mq -s xxx");
   const t = Date.now();
 
   bulidCode();
@@ -191,6 +195,8 @@ function compreResources() {
 function uploadCode(version) {
   return new Promise((resovle, reject) => {
     start("正在上传代码");
+    if (!checkUserName())
+      return error("获取用户名", "请先设置用户名 mq -s xxx");
     const t = Date.now();
     require("./plugs/upload")
       .upload(version)
@@ -244,6 +250,15 @@ function checkVerison(verison) {
   return true;
 }
 
+function checkUserName() {
+  try {
+    let config = JSON.parse(fs.readFileSync(configPath));
+    if (!config.userName || config.userName === "test") return false;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 function success(tag, time) {
   console.log(chalk.green(`【${tag}】成功，耗时：${time}ms`));
 }

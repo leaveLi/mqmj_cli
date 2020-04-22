@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const request = require("request");
-const { userName, uploadPath, uploadServer } = require("../config/config.json");
+const configPath = __dirname + "/../../mqmj_cli_config.json";
 
 // zip输出地址
 const outZipPath = `${process.cwd()}/bin-release/ah_alpha.zip`;
@@ -13,6 +13,9 @@ function upload(version) {
     packZip(version);
     parseBrandANDModule()
       .then(({ brandName, moduleName }) => {
+        const { userName, uploadPath, uploadServer } = JSON.parse(
+          fs.readFileSync(configPath)
+        );
         const formData = {
           AH_file: fs.createReadStream(outZipPath),
           user_name: userName,
