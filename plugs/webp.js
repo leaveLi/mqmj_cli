@@ -3,7 +3,7 @@ const f = require("fs");
 const p = require("path");
 
 const { execFile } = require("child_process");
-const cwebp = require("cwebp-bin");
+const cwebp = require("cwebp-bin-wishstart");
 const q = 75; // webp质量
 let cacheList = [];
 let count = 0;

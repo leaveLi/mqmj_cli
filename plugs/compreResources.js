@@ -2,7 +2,7 @@ const fileUtil = require("../utils/file");
 const fs = require("fs");
 const p = require("path");
 const { execFile } = require("child_process");
-const pngquant = require("pngquant-bin");
+const pngquant = require("pngquant-bin-wishstart");
 
 let count = 0;
 let fileList = [];
