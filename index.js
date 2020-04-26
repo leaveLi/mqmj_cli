@@ -124,9 +124,9 @@ function publish(version) {
   if (!checkUserName()) return error("获取用户名", "请先设置用户名 mq -s xxx");
   const t = Date.now();
 
-  bulidCode();
-
   generateProto();
+
+  bulidCode();
 
   generateWebp()
     .then(() => {

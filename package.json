@@ -1,6 +1,6 @@
 {
   "name": "mqmj_cli",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "梦启科技-h5产品自动化发布工具",
   "main": "index.js",
   "scripts": {
