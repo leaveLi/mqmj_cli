@@ -180,7 +180,7 @@ function compreResources() {
     start("正在压缩图片");
     const t = Date.now();
     require("./plugs/compreResources")
-      .compreResources()
+      .compreResources($rootPath)
       .then(() => {
         resovle();
         success("压缩图片", Date.now() - t);

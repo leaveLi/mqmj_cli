@@ -6,7 +6,7 @@ const pngquant = require("pngquant-bin-wishstart");
 
 let count = 0;
 let fileList = [];
-const q = 80; // png质量
+const q = "100"; // png质量
 const outputPath = `${process.cwd()}/resource/outputImages`;
 
 function read(path) {
@@ -33,18 +33,18 @@ function addFile(file, path) {
   });
 }
 
-exports.compreResources = function () {
+exports.compreResources = function (rootPath) {
   return new Promise((resovle, reject) => {
-    const tagFilePath = `${process.cwd()}/resource/compressResource.tag.json`;
+    const tagFilePath = `${rootPath}/resource/compressResource.tag.json`;
     let tagFile = fileUtil.read(tagFilePath);
     if (tagFile) {
       return resovle();
     }
-    read(`${process.cwd()}/resource`);
+    read(`${rootPath}/resource`);
     for (let file of fileList) {
       execFile(
         pngquant,
-        ["-q", q, file.sourcePath, "-o", file.sourcePath, "-f"],
+        [file.sourcePath, "-o", file.sourcePath, "-f"],
         (err) => {
           if (err) {
             reject(err);
