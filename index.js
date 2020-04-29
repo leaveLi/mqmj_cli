@@ -36,6 +36,11 @@ program
   .on("--help", () => {
     console.log();
     console.log(
+      "最新文档地址:",
+      chalk.blue("https://github.com/leaveLi/mqmj_cli#readme")
+    );
+    console.log();
+    console.log(
       chalk.red("打包上传到阿瓦隆必须先设置用户名（安装之后设置一次就行）")
     );
     console.log(chalk.yellow("    mq -s <username> eg: mq -s test_name"));

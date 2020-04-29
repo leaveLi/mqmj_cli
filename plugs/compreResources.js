@@ -27,6 +27,7 @@ function read(path) {
 }
 
 function addFile(file, path) {
+  if (file.indexOf("scale9Grid") >= 0) return;
   fileList.push({
     sourcePath: p.join(path, file),
     outputPath: p.join(outputPath, file),
@@ -41,10 +42,14 @@ exports.compreResources = function (rootPath) {
       return resovle();
     }
     read(`${rootPath}/resource`);
+    console.log(
+      "压缩列表",
+      fileList.map((file) => (file = file.sourcePath))
+    );
     for (let file of fileList) {
       execFile(
         pngquant,
-        [file.sourcePath, "-o", file.sourcePath, "-f"],
+        [file.sourcePath, "-o", file.sourcePath, "-f", "-v"],
         (err) => {
           if (err) {
             reject(err);
