@@ -1,5 +1,5 @@
-const { compreResources } = require("../plugs/compreResources");
+const { generateProto } = require("../plugs/proto");
 
-const cwd = "/Users/likun/laoyou_client/h5/chaotic";
+const cwd = "/Users/likun/wishstart/bflyqp/chaotic";
 
-compreResources(cwd);
+generateProto(cwd, 'master');

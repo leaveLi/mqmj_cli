@@ -5,7 +5,6 @@
 const chalk = require("chalk");
 const { execSync } = require("child_process");
 const { program } = require("commander");
-const fileUtil = require("./utils/file");
 const fs = require("fs");
 const configPath = __dirname + "/../mqmj_cli_config.json";
 
@@ -98,13 +97,15 @@ if (program.setUserName) {
 function setUserName(userName) {
   const t = Date.now();
 
-  let config = fileUtil.read(configPath);
-  if (!config) {
+  let config;
+  try {
+    config = JSON.parse(fs.readFileSync(configPath));
+  } catch(e) {
     config = {
-      userName: "test",
-      uploadServer: "https://pmaster.bflyzx.com",
-      uploadPath: "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl",
-    };
+        userName: "test",
+        uploadServer: "https://pmaster.bflyzx.com",
+        uploadPath: "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl",
+      };
   }
   config.userName = userName;
   fs.writeFileSync(configPath, JSON.stringify(config, null, "\t"));

@@ -3,15 +3,19 @@ const fs = require("fs");
 const path = require("path");
 
 function generateProto(rootPath, branch) {
-  const filesPath = `${rootPath}/../protocol/priv`;
+  const filesPath = `${rootPath}/../../protocol/priv`;
   const outpath = `${rootPath}/../chaotic_codex/protobuf/protofile/`;
 
-  execSync(`git checkout ${branch}`, { cwd: `${rootPath}/../protocol` });
-  execSync("git pull", { cwd: `${rootPath}/../protocol` });
+  console.log(
+    execSync(`git checkout ${branch}`, { cwd: `${rootPath}/../../protocol` })
+  );
+  console.log(execSync("git pull", { cwd: `${rootPath}/../../protocol` }));
 
   readFile(filesPath, outpath);
 
-  execSync("pb-egret generate", { cwd: `${rootPath}/../chaotic_codex` });
+  console.log(
+    execSync("pb-egret generate", { cwd: `${rootPath}/../chaotic_codex` })
+  );
 }
 
 function readFile(inputpath, outpath) {
