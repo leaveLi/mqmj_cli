@@ -3,15 +3,14 @@ const readline = require("readline");
 const request = require("request");
 const configPath = __dirname + "/../../mqmj_cli_config.json";
 
-// zip输出地址
-const outZipPath = `${process.cwd()}/bin-release/ah_alpha.zip`;
-// release代码目录
-const releaseCodePath = `${process.cwd()}/bin-release/web/`;
-
-function upload(version) {
+function upload(version, rootPath = process.cwd()) {
+  // zip输出地址
+  const outZipPath = `${rootPath}/bin-release/ah_alpha.zip`;
+  // release代码目录
+  const releaseCodePath = `${rootPath}/bin-release/web/`;
   return new Promise((resovle, reject) => {
-    packZip(version);
-    parseBrandANDModule()
+    packZip(version, releaseCodePath, outZipPath);
+    parseBrandANDModule(rootPath)
       .then(({ brandName, moduleName }) => {
         const { userName, uploadPath, uploadServer } = JSON.parse(
           fs.readFileSync(configPath)
@@ -41,7 +40,7 @@ function upload(version) {
   });
 }
 
-function packZip(version) {
+function packZip(version, releaseCodePath, outZipPath) {
   console.log(`开始打包：${releaseCodePath}${version}`);
   require("zip-local")
     .sync.zip(releaseCodePath + version)
@@ -50,9 +49,9 @@ function packZip(version) {
   console.log(`打包完成：${outZipPath}`);
 }
 
-function parseBrandANDModule() {
+function parseBrandANDModule(rootPath) {
   return new Promise((resovle, reject) => {
-    const coreTsFile = `${process.cwd()}/src/Core.ts`;
+    const coreTsFile = `${rootPath}/src/Core.ts`;
     const fileStream = fs.createReadStream(coreTsFile);
     const rl = readline.createInterface({ input: fileStream });
     console.log("开始解析brand和module");

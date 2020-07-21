@@ -32,6 +32,7 @@ program
   .option("-b, --build", "编译代码")
   .option("-be, --buildEngine", "编译代码+拷贝引擎代码+拷贝第三方库")
   .option("-pc, --publishCode <version>", "发布代码")
+  .option("-pu, --publishAndUpload <version>", "发布并上传")
   .on("--help", () => {
     console.log();
     console.log(
@@ -67,7 +68,12 @@ program
         "    mq -pc 1.0.0    发布代码 等同于 egret publish --version 1.0.0 --target web"
       )
     );
-    console.log("查看命令工具版本：mq -v 或 mq --pcakageVersion");
+    console.log(
+      chalk.blue(
+        "    mq -pu 1.0.0    发布并上传代码 等同于mq -pc 1.0.0 && mq -u 1.0.0"
+      )
+    );
+    console.log(chalk.blue("查看命令工具版本：mq -v 或 mq --pcakageVersion"));
   })
   .parse(process.argv);
 if (program.setUserName) {
@@ -88,6 +94,8 @@ if (program.setUserName) {
   buildEngine();
 } else if (program.publishCode) {
   publishCode(program.publishCode);
+} else if (program.publishAndUpload) {
+  publishAndUpload(program.publishCode);
 }
 
 /**
@@ -100,12 +108,12 @@ function setUserName(userName) {
   let config;
   try {
     config = JSON.parse(fs.readFileSync(configPath));
-  } catch(e) {
+  } catch (e) {
     config = {
-        userName: "test",
-        uploadServer: "https://pmaster.bflyzx.com",
-        uploadPath: "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl",
-      };
+      userName: "test",
+      uploadServer: "https://pmaster.bflyzx.com",
+      uploadPath: "/h5/archer/php/alpha.php/pro_deploy/egret/publish_awl",
+    };
   }
   config.userName = userName;
   fs.writeFileSync(configPath, JSON.stringify(config, null, "\t"));
@@ -194,8 +202,9 @@ function compreResources() {
       .catch((e) => error("压缩图片", e));
   });
 }
+
 /**
- *
+ * 上传代码
  * @param {string} version
  */
 function uploadCode(version) {
@@ -234,13 +243,36 @@ function buildEngine() {
   success("编译引擎", Date.now() - t);
 }
 
-function publishCode(verison) {
+/**
+ * 发布代码
+ * @param {string} verison
+ * @param {string} rootPath
+ */
+function publishCode(verison, rootPath = $rootPath) {
   start("正在发布代码：" + verison);
   const t = Date.now();
   console.log(
-    execSync(`egret publish --target web --version ${verison}`).toString()
+    execSync(`egret publish --target web --version ${verison}`, {
+      cwd: rootPath,
+    }).toString()
   );
   success("发布" + verison, Date.now() - t);
+}
+
+/**
+ * 发布并上传代码
+ * @param {string} version
+ */
+function publishAndUpload(version, rootPath = $rootPath) {
+  if (!checkVerison(version))
+    return error("版本号检测", "请编写规范的版本号 eg: 1.0.0 或者 1.0.0.0");
+  if (!checkUserName()) return error("获取用户名", "请先设置用户名 mq -s xxx");
+  publishCode(version, rootPath);
+  uploadCode(version, rootPath)
+    .then(() => {
+      success("发布", Date.now() - t);
+    })
+    .catch((e) => error("发布", e));
 }
 
 /**
@@ -276,3 +308,5 @@ function error(tag, error) {
 function start(tag) {
   console.log(chalk.yellow(tag));
 }
+
+module.exports = { publishAndUpload };

@@ -7,14 +7,14 @@ function generateProto(rootPath, branch) {
   const outpath = `${rootPath}/../chaotic_codex/protobuf/protofile/`;
 
   console.log(
-    execSync(`git checkout ${branch}`, { cwd: `${rootPath}/../../protocol` })
+    execSync(`git checkout ${branch}`, { cwd: `${rootPath}/../../protocol` }).toString()
   );
-  console.log(execSync("git pull", { cwd: `${rootPath}/../../protocol` }));
+  console.log(execSync("git pull", { cwd: `${rootPath}/../../protocol` }).toString());
 
   readFile(filesPath, outpath);
 
   console.log(
-    execSync("pb-egret generate", { cwd: `${rootPath}/../chaotic_codex` })
+    execSync("pb-egret generate", { cwd: `${rootPath}/../chaotic_codex` }).toString()
   );
 }
 

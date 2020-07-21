@@ -1,5 +1,5 @@
-const { generateProto } = require("../plugs/proto");
+const { publishAndUpload } = require("../index");
 
-const cwd = "/Users/likun/wishstart/bflyqp/chaotic";
+const path = "/Users/likun/wishstart/bflyqp/chaotic";
 
-generateProto(cwd, 'master');
+publishAndUpload("0.0.0", path);
