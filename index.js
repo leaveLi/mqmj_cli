@@ -95,7 +95,7 @@ if (program.setUserName) {
 } else if (program.publishCode) {
   publishCode(program.publishCode);
 } else if (program.publishAndUpload) {
-  publishAndUpload(program.publishCode);
+  publishAndUpload(program.publishAndUpload);
 }
 
 /**
