@@ -207,14 +207,14 @@ function compreResources() {
  * 上传代码
  * @param {string} version
  */
-function uploadCode(version) {
+function uploadCode(version, rootPath = $rootPath) {
   return new Promise((resovle, reject) => {
     start("正在上传代码");
     if (!checkUserName())
       return error("获取用户名", "请先设置用户名 mq -s xxx");
     const t = Date.now();
     require("./plugs/upload")
-      .upload(version)
+      .upload(version, rootPath)
       .then(() => {
         success("上传代码", Date.now() - t);
         resovle();
@@ -267,6 +267,7 @@ function publishAndUpload(version, rootPath = $rootPath) {
   if (!checkVerison(version))
     return error("版本号检测", "请编写规范的版本号 eg: 1.0.0 或者 1.0.0.0");
   if (!checkUserName()) return error("获取用户名", "请先设置用户名 mq -s xxx");
+  const t = Date.now();
   publishCode(version, rootPath);
   uploadCode(version, rootPath)
     .then(() => {
